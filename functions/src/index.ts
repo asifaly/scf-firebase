@@ -1,9 +1,16 @@
+import * as express from "express";
 import * as functions from "firebase-functions";
+import {addRecord, deleteRecord, getAllRecords, getRecordById, updateRecord} from "./controllers/dataController";
 
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+const app = express();
+
+app.get("/", (req, res) => res.status(200).send("Hey there!"));
+
+app.post("/:collectionName", addRecord);
+app.get("/:collectionName", getAllRecords);
+app.get("/:collectionName/:docId", getRecordById);
+app.patch("/:collectionName/:docId", updateRecord);
+app.delete("/:collectionName/:docI]", deleteRecord);
+
+
+exports.api = functions.https.onRequest(app);
